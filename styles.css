@@ -1,0 +1,90 @@
+body {
+    font-family: 'Fira Code', monospace;
+  }
+  
+  .intro {
+    background-color: #FF9933;
+    padding: 20px;
+    color: white; /* Ensures the text is readable */
+    border-radius: 8px; /* Optional: adds smooth corners */
+  }
+  
+  .intro h1 {
+    text-align: center;       
+    margin-top: 40px;
+  }
+  
+  .project-card {
+    background-color: #000;         /* Black background */
+    color: #fff;                    /* White text */
+    padding: 20px;
+    margin: 20px 0;
+    border-radius: 10px;            /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Soft shadow */
+  }
+  
+  .project-card a {
+    color: #ffcc00;                 /* Optional: gold-colored link */
+    text-decoration: none;
+  }
+  
+  .project-card a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Project grid container with two columns per row */
+  .project-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+    gap: 20px;
+    width: 100%;                           /* Ensure it stretches across the screen */
+    padding: 20px;                         /* Optional: add padding around the grid */
+    box-sizing: border-box;                /* Ensures padding doesn't affect layout */
+  }
+  
+  /* Optional: If you want cards to be full width in smaller screens */
+  @media (max-width: 768px) {
+    .project-grid {
+      grid-template-columns: 1fr; /* One card per row */
+    }
+  }
+  .projects h4 {
+    text-align: center; /* Center the heading */
+    font-size: 1.5rem;  /* Optional: adjust the size */
+    margin-bottom: 20px; /* Optional: adjust space below the heading */
+  }
+  
+  .final {
+    background-color: #138808; /* Indian flag green */
+    padding: 20px;
+    color: white; /* Ensures the text is readable */
+    border-radius: 8px; /* Optional: adds smooth corners */
+  }
+  
+  .final h3 {
+    text-align: center;
+    margin-top: 40px;
+  }
+  
+  .final ul {
+    list-style-type: none; /* Remove default bullet points */
+    padding: 0; /* Remove padding */
+  }
+  
+  .final li {
+    margin-bottom: 10px; /* Add some space between list items */
+  }
+  
+  .final p {
+    text-align: center; /* Center the paragraph */
+  }
+  
+  .final a {
+    color: #ffcc00; /* Optional: gold-colored link */
+    text-decoration: none;
+  }
+  
+  .final a:hover {
+    text-decoration: underline;
+  }
+  
