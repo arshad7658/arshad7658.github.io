@@ -1,0 +1,1937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shaik Arshad — Physics Educator &amp; Simulation Developer</title>
+  <meta name="description" content="Portfolio of Shaik Arshad — Physics Educator, M.Sc. Physics graduate, and Simulation Developer building interactive physics laboratories and computational models." />
+  <link rel="icon" type="image/png" href="./old_media/favicon-dep.png" />
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --bg-alt: #F5F5F5;
+      --fg: #000000;
+      --fg-muted: #4A4A4A;
+      --border: #D4D4D4;
+      --border-strong: #000000;
+      --panel-bg: rgba(255, 255, 255, 0.85);
+      --btn-bg: #000000;
+      --btn-fg: #FFFFFF;
+      --btn-hover-bg: #262626;
+      --pill-bg: rgba(255, 255, 255, 0.94);
+      --canvas-node: #000000;
+      --canvas-node-rest: rgba(0, 0, 0, 0.65);
+      --canvas-line: rgba(0, 0, 0, 0.28);
+      --canvas-line-strong: rgba(0, 0, 0, 0.45);
+      --canvas-soft: rgba(0, 0, 0, 0.15);
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      --max-w: 1160px;
+    }
+
+    html[data-theme="dark"],
+    body.dark {
+      --bg: #000000;
+      --bg-alt: #0D0D0D;
+      --fg: #FFFFFF;
+      --fg-muted: #A3A3A3;
+      --border: #262626;
+      --border-strong: #FFFFFF;
+      --panel-bg: rgba(13, 13, 13, 0.85);
+      --btn-bg: #FFFFFF;
+      --btn-fg: #000000;
+      --btn-hover-bg: #E5E5E5;
+      --pill-bg: rgba(13, 13, 13, 0.94);
+      --canvas-node: #FFFFFF;
+      --canvas-node-rest: rgba(255, 255, 255, 0.65);
+      --canvas-line: rgba(255, 255, 255, 0.28);
+      --canvas-line-strong: rgba(255, 255, 255, 0.45);
+      --canvas-soft: rgba(255, 255, 255, 0.15);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+    }
+
+    .container {
+      width: 100%;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .mono {
+      font-family: var(--mono);
+    }
+
+    /* Navigation */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 40;
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      gap: 16px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      font-size: 1rem;
+    }
+
+    .brand-mark {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border: 1px solid var(--border-strong);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--fg-muted);
+      transition: color 0.15s ease;
+    }
+
+    .nav-links a:hover {
+      color: var(--fg);
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .theme-toggle, .nav-toggle {
+      appearance: none;
+      background: transparent;
+      color: var(--fg);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: border-color 0.15s ease, background 0.15s ease;
+    }
+
+    .theme-toggle:hover, .nav-toggle:hover {
+      border-color: var(--border-strong);
+      background: var(--bg-alt);
+    }
+
+    .nav-toggle {
+      display: none;
+    }
+
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 64px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        background: var(--bg);
+        border-bottom: 1px solid var(--border);
+        padding: 8px 24px 16px;
+      }
+      .nav-links.open {
+        display: flex;
+      }
+      .nav-links li {
+        width: 100%;
+      }
+      .nav-links a {
+        display: block;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .nav-links li:last-child a {
+        border-bottom: none;
+      }
+      .nav-toggle {
+        display: inline-flex;
+      }
+    }
+
+    /* Hero Section */
+    .hero {
+      position: relative;
+      min-height: calc(100vh - 64px);
+      min-height: calc(100svh - 64px);
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      overflow: hidden;
+      padding: 64px 0 96px;
+    }
+
+    #physics-canvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+      z-index: 0;
+      background: #000000;
+      touch-action: pan-y;
+      cursor: crosshair;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 48px;
+      align-items: center;
+      pointer-events: none;
+    }
+
+    .hero-panel {
+      pointer-events: auto;
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      padding: 36px;
+    }
+
+    .hero-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      margin-bottom: 14px;
+    }
+
+    .hero-kicker::before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: var(--fg);
+    }
+
+    .hero-title {
+      font-size: clamp(2.25rem, 4.5vw, 3.5rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      margin-bottom: 12px;
+    }
+
+    .hero-role {
+      font-family: var(--mono);
+      font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+      font-weight: 500;
+      color: var(--fg-muted);
+      margin-bottom: 20px;
+    }
+
+    .hero-bio {
+      font-size: 1.05rem;
+      line-height: 1.65;
+      color: var(--fg);
+      margin-bottom: 28px;
+      max-width: 56ch;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 22px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      border: 1px solid var(--border-strong);
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, transform 0.15s ease;
+    }
+
+    .btn-primary {
+      background: var(--btn-bg);
+      color: var(--btn-fg);
+    }
+
+    .btn-primary:hover {
+      background: var(--btn-hover-bg);
+    }
+
+    .btn-secondary {
+      background: transparent;
+      color: var(--fg);
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-alt);
+    }
+
+    .hero-photo-wrap {
+      pointer-events: auto;
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      padding: 14px;
+      max-width: 340px;
+      justify-self: end;
+      width: 100%;
+    }
+
+    .hero-photo-frame {
+      position: relative;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      aspect-ratio: 4 / 5;
+      background: var(--bg-alt);
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.06);
+      transition: filter 0.35s ease, transform 0.35s ease;
+    }
+
+    .hero-photo-wrap:hover .hero-photo {
+      filter: grayscale(0%) contrast(1);
+      transform: scale(1.02);
+    }
+
+    .hero-photo-caption {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 10px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+    }
+
+    /* Floating Simulation Control Pill */
+    .sim-controls {
+      position: absolute;
+      right: 24px;
+      bottom: 24px;
+      z-index: 3;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 4px;
+      padding: 5px;
+      background: var(--pill-bg);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-strong);
+    }
+
+    .sim-btn {
+      appearance: none;
+      background: transparent;
+      color: var(--fg);
+      opacity: 0.78;
+      border: 1px solid transparent;
+      padding: 6px 10px;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease, opacity 0.15s ease;
+    }
+
+    .sim-btn:hover {
+      opacity: 1;
+      color: var(--fg);
+      background: var(--bg-alt);
+    }
+
+    .sim-btn.active {
+      opacity: 1;
+      background: var(--btn-bg);
+      color: var(--btn-fg);
+      border-color: var(--btn-bg);
+      font-weight: 600;
+    }
+
+    .sim-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border);
+      margin: 0 2px;
+    }
+
+    .sim-hint {
+      position: absolute;
+      left: 24px;
+      bottom: 28px;
+      z-index: 3;
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+      background: var(--pill-bg);
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      pointer-events: none;
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        padding: 40px 0 110px;
+      }
+      .hero-content {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+      .hero-photo-wrap {
+        justify-self: start;
+        max-width: 260px;
+      }
+      .sim-hint {
+        display: none;
+      }
+      .sim-controls {
+        left: 16px;
+        right: 16px;
+        bottom: 16px;
+        justify-content: center;
+      }
+    }
+
+    /* Sections */
+    .section {
+      padding: 80px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-alt {
+      background: var(--bg-alt);
+    }
+
+    .section-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 40px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-label {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--fg-muted);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 3vw, 2.25rem);
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+
+    .section-meta {
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      color: var(--fg-muted);
+    }
+
+    /* About & Pedagogy */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .about-prose p {
+      font-size: 1.02rem;
+      line-height: 1.7;
+      color: var(--fg);
+      margin-bottom: 18px;
+    }
+
+    .about-prose p:last-child {
+      margin-bottom: 0;
+    }
+
+    .edu-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .edu-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 20px;
+    }
+
+    .edu-year {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+      margin-bottom: 4px;
+    }
+
+    .edu-degree {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .edu-detail {
+      font-size: 0.9rem;
+      color: var(--fg-muted);
+    }
+
+    .tag-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .tag {
+      font-family: var(--mono);
+      font-size: 0.74rem;
+      padding: 4px 10px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--fg);
+    }
+
+    @media (max-width: 860px) {
+      .about-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 1024px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+    }
+
+    .project-media {
+      aspect-ratio: 16 / 10;
+      border-bottom: 1px solid var(--border);
+      background: var(--bg-alt);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) contrast(1.05);
+      transition: filter 0.3s ease, transform 0.3s ease;
+    }
+
+    .project-card:hover .project-media img {
+      filter: grayscale(0%) contrast(1);
+      transform: scale(1.03);
+    }
+
+    .project-diagram {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      font-family: var(--mono);
+      color: var(--fg);
+      gap: 8px;
+      text-align: center;
+    }
+
+    .project-diagram svg {
+      width: 56px;
+      height: 56px;
+      stroke: var(--fg);
+      fill: none;
+      stroke-width: 1.5;
+    }
+
+    .project-body {
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .project-index {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      color: var(--fg-muted);
+      margin-bottom: 8px;
+    }
+
+    .project-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      margin-bottom: 10px;
+    }
+
+    .project-desc {
+      font-size: 0.92rem;
+      color: var(--fg-muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      flex: 1;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .project-tags span {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      color: var(--fg-muted);
+    }
+
+    .project-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .project-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    /* Teaching & Syllabi */
+    .syllabi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 900px) {
+      .syllabi-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .syllabus-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .syllabus-code {
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--fg-muted);
+    }
+
+    .syllabus-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+    }
+
+    .syllabus-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid var(--border);
+      padding-top: 14px;
+    }
+
+    .syllabus-list li {
+      font-size: 0.92rem;
+      color: var(--fg-muted);
+      padding-left: 16px;
+      position: relative;
+    }
+
+    .syllabus-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--fg);
+      font-family: var(--mono);
+    }
+
+    /* Contact */
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .contact-info-list {
+      display: flex;
+      flex-direction: column;
+      border-top: 1px solid var(--border);
+      margin-top: 24px;
+    }
+
+    .contact-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.95rem;
+    }
+
+    .contact-item-label {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--fg-muted);
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
+    .contact-form {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-field label {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--fg-muted);
+    }
+
+    .form-field input,
+    .form-field textarea {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: var(--sans);
+      font-size: 0.95rem;
+      background: var(--bg);
+      color: var(--fg);
+      border: 1px solid var(--border);
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+
+    .form-field input:focus,
+    .form-field textarea:focus {
+      border-color: var(--border-strong);
+    }
+
+    .form-status {
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--fg-muted);
+      min-height: 1.2em;
+    }
+
+    /* Footer */
+    .site-footer {
+      padding: 36px 0;
+      background: var(--bg);
+    }
+
+    .footer-inner {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      font-size: 0.85rem;
+      color: var(--fg-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-family: var(--mono);
+      font-size: 0.8rem;
+    }
+
+    .footer-links a:hover {
+      color: var(--fg);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  </style>
+</head>
+<body class="light">
+
+  <header class="site-header">
+    <div class="container nav-inner">
+      <a href="#home" class="brand">
+        <span class="brand-mark">SA</span>
+        <span>Shaik Arshad</span>
+      </a>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#projects">Labs &amp; Projects</a></li>
+        <li><a href="#teaching">Teaching</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://shaik-arshad-hyd-resume-7.tiiny.site" target="_blank" rel="noopener noreferrer">Resume ↗</a></li>
+      </ul>
+      <div class="nav-actions">
+        <button type="button" class="theme-toggle" id="theme-toggle" aria-label="Toggle color theme">DARK</button>
+        <button type="button" class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">MENU</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section id="home" class="hero" aria-label="Introduction and interactive physics canvas">
+      <canvas id="physics-canvas" aria-hidden="true"></canvas>
+
+      <div class="container hero-content">
+        <div class="hero-panel">
+          <div class="hero-kicker">Interactive Physics &amp; Computation</div>
+          <h1 class="hero-title">Shaik Arshad</h1>
+          <p class="hero-role">Physics Educator &amp; Simulation Developer</p>
+          <p class="hero-bio">
+            I design intuition-first physics laboratories, mathematical visualizations, and AI-assisted learning tools that turn abstract equations into tangible systems. With an M.Sc. in Physics and a background in computer science, I bridge rigorous theory with interactive code.
+          </p>
+          <div class="hero-ctas">
+            <a href="#projects" class="btn btn-primary">Explore Simulations</a>
+            <a href="#contact" class="btn btn-secondary">Get in Touch</a>
+          </div>
+        </div>
+
+        <div class="hero-photo-wrap">
+          <div class="hero-photo-frame">
+            <img src="./old_media/profile.jpg" alt="Portrait of Shaik Arshad" class="hero-photo" />
+          </div>
+          <div class="hero-photo-caption">
+            <span>HYD / IN</span>
+            <span>M.SC. PHYSICS</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="sim-hint" id="sim-hint">Move cursor to perturb · Click for wave impulse · Drag nodes</div>
+
+      <div class="sim-controls" role="group" aria-label="Physics canvas mode">
+        <button type="button" class="sim-btn active" data-mode="spring">Spring Mesh</button>
+        <button type="button" class="sim-btn" data-mode="wave">Wave Interference</button>
+        <button type="button" class="sim-btn" data-mode="orbital">Orbital Field</button>
+        <span class="sim-divider" aria-hidden="true"></span>
+        <button type="button" class="sim-btn" id="sim-reset">Reset</button>
+      </div>
+    </section>
+
+    <!-- About & Pedagogy -->
+    <section id="about" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">01 / Background</div>
+            <h2 class="section-title">About &amp; Pedagogy</h2>
+          </div>
+          <div class="section-meta">Intuition-First Physics &amp; Computational Modeling</div>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-prose">
+            <p>
+              I am a Physics educator and simulation developer based in Hyderabad, India, focused on making classical mechanics, calculus, and computational science immediately visual and manipulable. Rather than treating formulas as static symbols to memorize, my teaching centers on building mental models through direct experimentation.
+            </p>
+            <p>
+              My work spans interactive browser laboratories, procedural Manim animations, computer vision applications, and retrieval-augmented AI systems—integrating modern software tools into the classroom so students can probe systems, test edge cases, and see the geometry behind every law.
+            </p>
+            <div class="tag-row" aria-label="Core competencies">
+              <span class="tag">Python</span>
+              <span class="tag">JavaScript / HTML5 Canvas</span>
+              <span class="tag">ReactJS</span>
+              <span class="tag">Manim</span>
+              <span class="tag">Computer Vision</span>
+              <span class="tag">SQL</span>
+              <span class="tag">DFT Modeling</span>
+              <span class="tag">Curriculum Design</span>
+            </div>
+          </div>
+
+          <div class="edu-stack">
+            <div class="edu-card">
+              <div class="edu-year">2023 — 2025 · GRADE A</div>
+              <div class="edu-degree">M.Sc. in Physics</div>
+              <div class="edu-detail">Graduate studies in theoretical &amp; computational physics, including Density Functional Theory (DFT) nanocluster modeling.</div>
+            </div>
+            <div class="edu-card">
+              <div class="edu-year">2020 — 2023 · GRADE A</div>
+              <div class="edu-degree">B.Sc. in Mathematics, Physics &amp; Computer Science</div>
+              <div class="edu-detail">Triple-major foundation uniting analytical mathematics, core physics, and software engineering.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Interactive Labs & Projects -->
+    <section id="projects" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">02 / Selected Work</div>
+            <h2 class="section-title">Interactive Labs &amp; Projects</h2>
+          </div>
+          <div class="section-meta">Simulations, Visual Math, AI &amp; Research</div>
+        </div>
+
+        <div class="projects-grid">
+          <!-- Rotational Dynamics Laboratory -->
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./old_media/class-Ciio3z7g.png" alt="Rotational Dynamics Laboratory interface preview" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <div class="project-index">LAB 01 / MECHANICS</div>
+              <h3 class="project-title">Rotational Dynamics Laboratory</h3>
+              <p class="project-desc">
+                Interactive rigid-body physics sandbox for exploring torque (&tau; = I&alpha;), angular momentum conservation, and moment of inertia across geometries in real time.
+              </p>
+              <div class="project-tags">
+                <span>Physics Sim</span>
+                <span>Rigid Body</span>
+                <span>Web App</span>
+              </div>
+              <a href="https://classroom-tools-gamma.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">
+                <span>Launch Laboratory</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Basic Calculus Differentiation Lab -->
+          <article class="project-card">
+            <div class="project-media">
+              <div class="project-diagram" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <line x1="8" y1="54" x2="58" y2="54" />
+                  <line x1="12" y1="8" x2="12" y2="58" />
+                  <path d="M14 48 C 24 46, 36 28, 52 12" />
+                  <line x1="22" y1="48" x2="54" y2="16" stroke-dasharray="3 3" />
+                  <circle cx="36" cy="30" r="3" fill="currentColor" />
+                </svg>
+                <span>df/dx = lim[h&rarr;0] (f(x+h)-f(x))/h</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <div class="project-index">LAB 02 / MATHEMATICS</div>
+              <h3 class="project-title">Basic Calculus Differentiation Lab</h3>
+              <p class="project-desc">
+                Visual differentiation explorer illustrating secant-to-tangent convergence, instantaneous rates of change, and slope fields for first-principles calculus.
+              </p>
+              <div class="project-tags">
+                <span>Calculus</span>
+                <span>Visual Math</span>
+                <span>Classroom Tools</span>
+              </div>
+              <a href="https://classroom-tools-gamma.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">
+                <span>Open Calculus Lab</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Manim Physics Animations -->
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./old_media/manim-pdg3g833.jpg" alt="Manim Physics Animations frame" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <div class="project-index">LAB 03 / VISUALIZATION</div>
+              <h3 class="project-title">Manim Physics Animations</h3>
+              <p class="project-desc">
+                Programmatic mathematical and physics animations built with Python and Manim to visualize derivations, vector fields, and wave phenomena frame by frame.
+              </p>
+              <div class="project-tags">
+                <span>Python</span>
+                <span>Manim</span>
+                <span>Pedagogy</span>
+              </div>
+              <a href="https://mega.nz/folder/PwpWBbJR#PqezV-QsxKfShT-gWndIzA" target="_blank" rel="noopener noreferrer" class="project-link">
+                <span>View Animation Archive</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Computer Vision Web App -->
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./old_media/age-gender-Bsb03057.png" alt="Computer Vision Web App for Age and Gender Estimation" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <div class="project-index">PROJECT 04 / COMPUTER VISION</div>
+              <h3 class="project-title">Computer Vision Web App</h3>
+              <p class="project-desc">
+                Real-time facial analysis and age/gender estimation pipeline using deep learning and OpenCV, packaged with an interactive web interface.
+              </p>
+              <div class="project-tags">
+                <span>Python</span>
+                <span>Computer Vision</span>
+                <span>Deep Learning</span>
+              </div>
+              <a href="https://github.com/arshad7658/Age_Gender_Estimation" target="_blank" rel="noopener noreferrer" class="project-link">
+                <span>View on GitHub</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- RAG Based Traffic Law Advisor -->
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./old_media/chatbot1-D47lUCsa.png" alt="RAG Based Traffic Law Advisor chatbot interface" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <div class="project-index">PROJECT 05 / APPLIED AI</div>
+              <h3 class="project-title">RAG Traffic Law Advisor</h3>
+              <p class="project-desc">
+                Retrieval-Augmented Generation assistant engineered to index and query structured legal statutes for accurate, citation-grounded traffic law answers.
+              </p>
+              <div class="project-tags">
+                <span>RAG</span>
+                <span>LLM</span>
+                <span>Python</span>
+              </div>
+              <a href="https://github.com/arshad7658/RAG" target="_blank" rel="noopener noreferrer" class="project-link">
+                <span>View on GitHub</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </article>
+
+          <!-- Computational DFT Nanocluster Research -->
+          <article class="project-card">
+            <div class="project-media">
+              <div class="project-diagram" aria-hidden="true">
+                <svg viewBox="0 0 64 64">
+                  <polygon points="32,10 52,22 52,42 32,54 12,42 12,22" />
+                  <line x1="32" y1="10" x2="32" y2="54" />
+                  <line x1="12" y1="22" x2="52" y2="42" />
+                  <line x1="52" y1="22" x2="12" y2="42" />
+                  <circle cx="32" cy="10" r="2.5" fill="currentColor" />
+                  <circle cx="52" cy="22" r="2.5" fill="currentColor" />
+                  <circle cx="52" cy="42" r="2.5" fill="currentColor" />
+                  <circle cx="32" cy="54" r="2.5" fill="currentColor" />
+                  <circle cx="12" cy="42" r="2.5" fill="currentColor" />
+                  <circle cx="12" cy="22" r="2.5" fill="currentColor" />
+                  <circle cx="32" cy="32" r="3.5" fill="currentColor" />
+                </svg>
+                <span>&psi; &rarr; E[&rho;(r)] · DFT</span>
+              </div>
+            </div>
+            <div class="project-body">
+              <div class="project-index">RESEARCH 06 / QUANTUM</div>
+              <h3 class="project-title">Computational DFT Nanocluster Research</h3>
+              <p class="project-desc">
+                M.Sc. Physics computational investigation of atomic nanocluster geometries, binding energies, and electronic structure using Density Functional Theory.
+              </p>
+              <div class="project-tags">
+                <span>DFT</span>
+                <span>Nanoclusters</span>
+                <span>M.Sc. Physics</span>
+              </div>
+              <a href="https://github.com/arshad7658" target="_blank" rel="noopener noreferrer" class="project-link">
+                <span>Explore GitHub Profile</span>
+                <span>↗</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- Teaching & Syllabi -->
+    <section id="teaching" class="section section-alt">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">03 / Curriculum</div>
+            <h2 class="section-title">Teaching &amp; Syllabi</h2>
+          </div>
+          <div class="section-meta">Structured Rigor Across Levels</div>
+        </div>
+
+        <div class="syllabi-grid">
+          <div class="syllabus-card">
+            <div class="syllabus-code">TRACK 01 / COMPETITIVE</div>
+            <h3 class="syllabus-title">High School &amp; IIT/NEET Foundation Physics</h3>
+            <ul class="syllabus-list">
+              <li>Kinematics, Newton's Laws &amp; Rotational Mechanics</li>
+              <li>Electrostatics, Current Electricity &amp; Magnetism</li>
+              <li>Waves, Optics &amp; Modern Physics Problem-Solving</li>
+              <li>Visual derivation &amp; multi-concept numerical mastery</li>
+            </ul>
+          </div>
+
+          <div class="syllabus-card">
+            <div class="syllabus-code">TRACK 02 / UNIVERSITY</div>
+            <h3 class="syllabus-title">Engineering Mathematics</h3>
+            <ul class="syllabus-list">
+              <li>Differential &amp; Integral Calculus, Vector Calculus</li>
+              <li>Linear Algebra, Eigenvalues &amp; Matrix Methods</li>
+              <li>Ordinary &amp; Partial Differential Equations</li>
+              <li>Numerical Methods &amp; Computational Modeling</li>
+            </ul>
+          </div>
+
+          <div class="syllabus-card">
+            <div class="syllabus-code">TRACK 03 / BOARDS</div>
+            <h3 class="syllabus-title">SSC / ICSE / IGCSE Physics &amp; Mathematics</h3>
+            <ul class="syllabus-list">
+              <li>Concept-first foundations in Force, Energy &amp; Matter</li>
+              <li>Algebra, Geometry, Trigonometry &amp; Coordinate Systems</li>
+              <li>Interactive lab demonstrations &amp; exam strategy</li>
+              <li>Tailored pacing for international &amp; state syllabi</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-label">04 / Connect</div>
+            <h2 class="section-title">Get in Touch</h2>
+          </div>
+          <div class="section-meta">Open to Teaching, Simulation &amp; R&amp;D Roles</div>
+        </div>
+
+        <div class="contact-grid">
+          <div>
+            <p>
+              Available for physics instruction, interactive simulation development, and educational technology collaborations. Reach out directly or send a message using the form.
+            </p>
+            <div class="contact-info-list">
+              <div class="contact-item">
+                <span class="contact-item-label">Email</span>
+                <a href="mailto:shaikarshadbindawood@gmail.com">shaikarshadbindawood@gmail.com</a>
+              </div>
+              <div class="contact-item">
+                <span class="contact-item-label">Phone</span>
+                <a href="tel:+917658960712">+91-7658960712</a>
+              </div>
+              <div class="contact-item">
+                <span class="contact-item-label">Location</span>
+                <span>Hyderabad, Telangana, India</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-item-label">GitHub</span>
+                <a href="https://github.com/arshad7658" target="_blank" rel="noopener noreferrer">github.com/arshad7658 ↗</a>
+              </div>
+              <div class="contact-item">
+                <span class="contact-item-label">Resume</span>
+                <a href="https://shaik-arshad-hyd-resume-7.tiiny.site" target="_blank" rel="noopener noreferrer">View Resume ↗</a>
+              </div>
+            </div>
+          </div>
+
+          <form class="contact-form" id="contact-form">
+            <div class="form-field">
+              <label for="name">Your Name</label>
+              <input id="name" name="name" type="text" placeholder="Enter your name" required />
+            </div>
+            <div class="form-field">
+              <label for="email">Your Email</label>
+              <input id="email" name="email" type="email" placeholder="Enter your email" required />
+            </div>
+            <div class="form-field">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="5" placeholder="Enter your message" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+            <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div>&copy; <span id="year">2026</span> Shaik Arshad. All rights reserved.</div>
+      <div class="footer-links">
+        <a href="https://github.com/arshad7658" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="mailto:shaikarshadbindawood@gmail.com">Email</a>
+        <a href="https://shaik-arshad-hyd-resume-7.tiiny.site" target="_blank" rel="noopener noreferrer">Resume</a>
+        <a href="#home">Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      'use strict';
+
+      // --- Year & Mobile Navigation ---
+      const yearEl = document.getElementById('year');
+      if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+      const navToggle = document.getElementById('nav-toggle');
+      const navLinks = document.getElementById('nav-links');
+      if (navToggle && navLinks) {
+        navToggle.addEventListener('click', () => {
+          const isOpen = navLinks.classList.toggle('open');
+          navToggle.setAttribute('aria-expanded', String(isOpen));
+        });
+        navLinks.querySelectorAll('a').forEach((link) => {
+          link.addEventListener('click', () => {
+            navLinks.classList.remove('open');
+            navToggle.setAttribute('aria-expanded', 'false');
+          });
+        });
+      }
+
+      // --- Monochrome Theme Toggle ---
+      const themeToggle = document.getElementById('theme-toggle');
+      const rootEl = document.documentElement;
+      const bodyEl = document.body;
+
+      function applyTheme(isDark) {
+        if (isDark) {
+          rootEl.setAttribute('data-theme', 'dark');
+          bodyEl.classList.remove('light');
+          bodyEl.classList.add('dark');
+          if (themeToggle) themeToggle.textContent = 'LIGHT';
+        } else {
+          rootEl.removeAttribute('data-theme');
+          bodyEl.classList.remove('dark');
+          bodyEl.classList.add('light');
+          if (themeToggle) themeToggle.textContent = 'DARK';
+        }
+      }
+
+      const savedTheme = localStorage.getItem('portfolio-theme');
+      applyTheme(savedTheme === 'dark');
+
+      if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+          const isDark = bodyEl.classList.contains('dark');
+          const nextDark = !isDark;
+          applyTheme(nextDark);
+          localStorage.setItem('portfolio-theme', nextDark ? 'dark' : 'light');
+          if (typeof renderFrame === 'function') renderFrame();
+        });
+      }
+
+      // --- Contact Form (Web3Forms) ---
+      const contactForm = document.getElementById('contact-form');
+      const formStatus = document.getElementById('form-status');
+      if (contactForm && formStatus) {
+        contactForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          formStatus.textContent = 'Sending...';
+          const formData = new FormData(contactForm);
+          formData.append('access_key', '06c843b3-fc7a-4ce0-b0b2-d3a283cea985');
+          try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+              method: 'POST',
+              body: formData
+            });
+            const data = await res.json();
+            if (data.success) {
+              formStatus.textContent = 'Message sent successfully.';
+              contactForm.reset();
+            } else {
+              formStatus.textContent = data.message || 'Unable to send message.';
+            }
+          } catch (err) {
+            formStatus.textContent = 'Network error. Please email shaikarshadbindawood@gmail.com directly.';
+          }
+        });
+      }
+
+      // --- Interactive Physics Canvas (explorabl.es-inspired) ---
+      const canvas = document.getElementById('physics-canvas');
+      const heroSection = document.getElementById('home');
+      if (!canvas || !heroSection) return;
+
+      const ctx = canvas.getContext('2d');
+      const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      let prefersReducedMotion = reducedMotionQuery.matches;
+
+      let width = 0;
+      let height = 0;
+      let dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+      let mode = 'spring'; // 'spring' | 'wave' | 'orbital'
+      let isHeroVisible = true;
+      let rafId = null;
+      let simTime = 0;
+
+      // Pure black canvas with white geometry in both light and dark modes
+      function getCanvasColors() {
+        return {
+          node: '#FFFFFF',
+          nodeRest: 'rgba(255, 255, 255, 0.65)',
+          line: 'rgba(255, 255, 255, 0.28)',
+          lineStrong: 'rgba(255, 255, 255, 0.45)',
+          soft: 'rgba(255, 255, 255, 0.15)'
+        };
+      }
+
+      // Pointer state
+      const pointer = {
+        x: -9999,
+        y: -9999,
+        active: false,
+        down: false,
+        dragNode: null
+      };
+
+      // Simulation state
+      let cols = 0;
+      let rows = 0;
+      let spacing = 54;
+      let nodes = [];
+      let springs = [];
+      let waveImpulses = [];
+      let orbiters = [];
+
+      function buildSpringMesh() {
+        nodes = [];
+        springs = [];
+        spacing = width < 640 ? 46 : 56;
+        cols = Math.max(6, Math.floor(width / spacing) + 1);
+        rows = Math.max(5, Math.floor(height / spacing) + 1);
+
+        const offsetX = (width - (cols - 1) * spacing) * 0.5;
+        const offsetY = (height - (rows - 1) * spacing) * 0.5;
+
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            const x = offsetX + c * spacing;
+            const y = offsetY + r * spacing;
+            const pinned = r === 0 || r === rows - 1 || c === 0 || c === cols - 1;
+            nodes.push({
+              x,
+              y,
+              homeX: x,
+              homeY: y,
+              vx: 0,
+              vy: 0,
+              pinned,
+              energy: 0
+            });
+          }
+        }
+
+        const idx = (r, c) => r * cols + c;
+        for (let r = 0; r < rows; r++) {
+          for (let c = 0; c < cols; c++) {
+            if (c + 1 < cols) {
+              springs.push({ a: idx(r, c), b: idx(r, c + 1), rest: spacing });
+            }
+            if (r + 1 < rows) {
+              springs.push({ a: idx(r, c), b: idx(r + 1, c), rest: spacing });
+            }
+          }
+        }
+      }
+
+      function buildOrbitalField() {
+        orbiters = [];
+        const count = width < 640 ? 28 : 48;
+        const cx = width * 0.5;
+        const cy = height * 0.5;
+        const minDim = Math.min(width, height);
+
+        for (let i = 0; i < count; i++) {
+          const radius = minDim * (0.14 + (i / count) * 0.42);
+          const angle = (i * 2.39996) % (Math.PI * 2);
+          const speed = Math.sqrt(1800 / Math.max(radius, 40));
+          const x = cx + Math.cos(angle) * radius;
+          const y = cy + Math.sin(angle) * radius;
+          orbiters.push({
+            x,
+            y,
+            vx: -Math.sin(angle) * speed,
+            vy: Math.cos(angle) * speed,
+            trail: []
+          });
+        }
+      }
+
+      function resetSimulation() {
+        waveImpulses = [];
+        simTime = 0;
+        buildSpringMesh();
+        buildOrbitalField();
+        if (prefersReducedMotion) {
+          renderFrame();
+        }
+      }
+
+      function resizeCanvas() {
+        const rect = heroSection.getBoundingClientRect();
+        width = Math.max(1, Math.floor(rect.width));
+        height = Math.max(1, Math.floor(rect.height));
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+        canvas.width = Math.floor(width * dpr);
+        canvas.height = Math.floor(height * dpr);
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        resetSimulation();
+      }
+
+      function injectImpulse(x, y, strength) {
+        if (mode === 'spring') {
+          const radius = 240;
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            if (n.pinned) continue;
+            const dx = n.x - x;
+            const dy = n.y - y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < radius && dist > 0.001) {
+              const falloff = 1 - dist / radius;
+              const impulse = strength * falloff * falloff;
+              n.vx += (dx / dist) * impulse;
+              n.vy += (dy / dist) * impulse;
+            }
+          }
+          waveImpulses.push({ x, y, r: 4, maxR: 260, alpha: 0.7 });
+        } else if (mode === 'wave') {
+          waveImpulses.push({ x, y, t: simTime, r: 0, maxR: 420, alpha: 0.85 });
+          if (waveImpulses.length > 8) waveImpulses.shift();
+        } else if (mode === 'orbital') {
+          for (let i = 0; i < orbiters.length; i++) {
+            const o = orbiters[i];
+            const dx = o.x - x;
+            const dy = o.y - y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 220 && dist > 1) {
+              const push = (1 - dist / 220) * 2.4;
+              o.vx += (dx / dist) * push;
+              o.vy += (dy / dist) * push;
+            }
+          }
+          waveImpulses.push({ x, y, r: 4, maxR: 200, alpha: 0.65 });
+        }
+      }
+
+      function stepSpringMesh() {
+        const stiffness = 0.065;
+        const anchorK = 0.025;
+        const damping = 0.91;
+
+        for (let i = 0; i < springs.length; i++) {
+          const s = springs[i];
+          const a = nodes[s.a];
+          const b = nodes[s.b];
+          const dx = b.x - a.x;
+          const dy = b.y - a.y;
+          const dist = Math.hypot(dx, dy) || 0.001;
+          const force = (dist - s.rest) * stiffness;
+          const fx = (dx / dist) * force;
+          const fy = (dy / dist) * force;
+          if (!a.pinned && a !== pointer.dragNode) {
+            a.vx += fx;
+            a.vy += fy;
+          }
+          if (!b.pinned && b !== pointer.dragNode) {
+            b.vx -= fx;
+            b.vy -= fy;
+          }
+        }
+
+        // Gentle cursor perturbation
+        if (pointer.active && !pointer.dragNode) {
+          const influenceR = 135;
+          for (let i = 0; i < nodes.length; i++) {
+            const n = nodes[i];
+            if (n.pinned) continue;
+            const dx = n.x - pointer.x;
+            const dy = n.y - pointer.y;
+            const dist = Math.hypot(dx, dy);
+            if (dist < influenceR && dist > 1) {
+              const push = (1 - dist / influenceR) * 0.85;
+              n.vx += (dx / dist) * push;
+              n.vy += (dy / dist) * push;
+            }
+          }
+        }
+
+        // Subtle ambient breathing wave when not reduced motion
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          if (n === pointer.dragNode && pointer.down) {
+            n.x = pointer.x;
+            n.y = pointer.y;
+            n.vx = 0;
+            n.vy = 0;
+            n.energy = 1;
+            continue;
+          }
+          if (n.pinned) continue;
+
+          if (!prefersReducedMotion) {
+            const ambient = Math.sin(simTime * 0.025 + n.homeX * 0.012 + n.homeY * 0.012) * 0.06;
+            n.vy += ambient;
+          }
+
+          n.vx += (n.homeX - n.x) * anchorK;
+          n.vy += (n.homeY - n.y) * anchorK;
+          n.vx *= damping;
+          n.vy *= damping;
+          n.x += n.vx;
+          n.y += n.vy;
+
+          const disp = Math.hypot(n.x - n.homeX, n.y - n.homeY);
+          n.energy = Math.min(1, disp / 18);
+        }
+      }
+
+      function drawSpringMesh(c) {
+        ctx.lineWidth = 1;
+        ctx.strokeStyle = c.line;
+        ctx.beginPath();
+        for (let i = 0; i < springs.length; i++) {
+          const s = springs[i];
+          const a = nodes[s.a];
+          const b = nodes[s.b];
+          ctx.moveTo(a.x, a.y);
+          ctx.lineTo(b.x, b.y);
+        }
+        ctx.stroke();
+
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          const r = 2.0 + n.energy * 2.5;
+          ctx.fillStyle = n.energy > 0.2 ? c.node : c.nodeRest;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function drawWaveInterference(c) {
+        const s1x = width * 0.34;
+        const s1y = height * 0.48;
+        const s2x = pointer.active ? pointer.x : width * 0.68;
+        const s2y = pointer.active ? pointer.y : height * 0.52;
+        const k = 0.065;
+        const omega = prefersReducedMotion ? 0 : 0.09;
+
+        // Draw subtle grid lines
+        ctx.strokeStyle = c.soft;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        for (let i = 0; i < springs.length; i++) {
+          const s = springs[i];
+          const a = nodes[s.a];
+          const b = nodes[s.b];
+          ctx.moveTo(a.homeX, a.homeY);
+          ctx.lineTo(b.homeX, b.homeY);
+        }
+        ctx.stroke();
+
+        // Draw interference amplitude on lattice nodes
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          const d1 = Math.hypot(n.homeX - s1x, n.homeY - s1y);
+          const d2 = Math.hypot(n.homeX - s2x, n.homeY - s2y);
+          let amp = Math.sin(d1 * k - simTime * omega) + Math.sin(d2 * k - simTime * omega);
+
+          for (let w = 0; w < waveImpulses.length; w++) {
+            const imp = waveImpulses[w];
+            const dw = Math.hypot(n.homeX - imp.x, n.homeY - imp.y);
+            const age = simTime - imp.t;
+            const ring = Math.abs(dw - age * 4.5);
+            if (ring < 45) {
+              amp += Math.cos((ring / 45) * Math.PI * 0.5) * 1.4 * Math.max(0, 1 - age / 90);
+            }
+          }
+
+          const norm = Math.max(-1, Math.min(1, amp * 0.5));
+          const r = 1.6 + Math.abs(norm) * 4.2;
+          ctx.fillStyle = norm >= 0 ? c.node : c.lineStrong;
+          ctx.beginPath();
+          ctx.arc(n.homeX, n.homeY - norm * 6, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function stepOrbitalField() {
+        const cx = pointer.active ? pointer.x * 0.35 + width * 0.5 * 0.65 : width * 0.5;
+        const cy = pointer.active ? pointer.y * 0.35 + height * 0.5 * 0.65 : height * 0.5;
+        const GM = 1800;
+
+        for (let i = 0; i < orbiters.length; i++) {
+          const o = orbiters[i];
+          const dx = cx - o.x;
+          const dy = cy - o.y;
+          const distSq = Math.max(dx * dx + dy * dy, 900);
+          const dist = Math.sqrt(distSq);
+          const accel = GM / distSq;
+
+          o.vx += (dx / dist) * accel;
+          o.vy += (dy / dist) * accel;
+
+          // Gentle speed cap for stability
+          const spd = Math.hypot(o.vx, o.vy);
+          if (spd > 7) {
+            o.vx = (o.vx / spd) * 7;
+            o.vy = (o.vy / spd) * 7;
+          }
+
+          o.x += o.vx;
+          o.y += o.vy;
+
+          o.trail.push({ x: o.x, y: o.y });
+          if (o.trail.length > 22) o.trail.shift();
+        }
+      }
+
+      function drawOrbitalField(c) {
+        const cx = pointer.active ? pointer.x * 0.35 + width * 0.5 * 0.65 : width * 0.5;
+        const cy = pointer.active ? pointer.y * 0.35 + height * 0.5 * 0.65 : height * 0.5;
+
+        // Subtle equipotential rings
+        ctx.strokeStyle = c.soft;
+        ctx.lineWidth = 1;
+        for (let r = 80; r <= Math.min(width, height) * 0.5; r += 80) {
+          ctx.beginPath();
+          ctx.arc(cx, cy, r, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+
+        // Central mass
+        ctx.fillStyle = c.node;
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4.5, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Orbiters & trails
+        for (let i = 0; i < orbiters.length; i++) {
+          const o = orbiters[i];
+          if (o.trail.length > 1) {
+            ctx.strokeStyle = c.line;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(o.trail[0].x, o.trail[0].y);
+            for (let t = 1; t < o.trail.length; t++) {
+              ctx.lineTo(o.trail[t].x, o.trail[t].y);
+            }
+            ctx.stroke();
+          }
+          ctx.fillStyle = c.node;
+          ctx.beginPath();
+          ctx.arc(o.x, o.y, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function drawImpulses(c) {
+        for (let i = waveImpulses.length - 1; i >= 0; i--) {
+          const imp = waveImpulses[i];
+          if (mode === 'wave') {
+            if (simTime - imp.t > 90) waveImpulses.splice(i, 1);
+            continue;
+          }
+          imp.r += 5.5;
+          imp.alpha *= 0.94;
+          ctx.strokeStyle = c.lineStrong;
+          ctx.globalAlpha = imp.alpha;
+          ctx.lineWidth = 1.25;
+          ctx.beginPath();
+          ctx.arc(imp.x, imp.y, imp.r, 0, Math.PI * 2);
+          ctx.stroke();
+          ctx.globalAlpha = 1;
+          if (imp.r >= imp.maxR || imp.alpha < 0.03) {
+            waveImpulses.splice(i, 1);
+          }
+        }
+      }
+
+      function renderFrame() {
+        const c = getCanvasColors();
+        ctx.clearRect(0, 0, width, height);
+        if (mode === 'spring') {
+          drawSpringMesh(c);
+        } else if (mode === 'wave') {
+          drawWaveInterference(c);
+        } else if (mode === 'orbital') {
+          drawOrbitalField(c);
+        }
+        drawImpulses(c);
+      }
+
+      function tick() {
+        if (!isHeroVisible) {
+          rafId = null;
+          return;
+        }
+        if (!prefersReducedMotion) {
+          simTime += 1;
+          if (mode === 'spring') stepSpringMesh();
+          else if (mode === 'orbital') stepOrbitalField();
+        }
+        renderFrame();
+        rafId = requestAnimationFrame(tick);
+      }
+
+      function startLoop() {
+        if (rafId === null && isHeroVisible) {
+          rafId = requestAnimationFrame(tick);
+        }
+      }
+
+      // Pointer & Touch Events
+      function getCanvasCoords(clientX, clientY) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+          x: clientX - rect.left,
+          y: clientY - rect.top
+        };
+      }
+
+      function findNearestNode(x, y) {
+        let best = null;
+        let bestDist = 34;
+        for (let i = 0; i < nodes.length; i++) {
+          const n = nodes[i];
+          if (n.pinned) continue;
+          const d = Math.hypot(n.x - x, n.y - y);
+          if (d < bestDist) {
+            bestDist = d;
+            best = n;
+          }
+        }
+        return best;
+      }
+
+      canvas.addEventListener('pointerdown', (e) => {
+        const pos = getCanvasCoords(e.clientX, e.clientY);
+        pointer.x = pos.x;
+        pointer.y = pos.y;
+        pointer.active = true;
+        pointer.down = true;
+        if (mode === 'spring') {
+          pointer.dragNode = findNearestNode(pos.x, pos.y);
+        }
+        injectImpulse(pos.x, pos.y, 8.5);
+      });
+
+      window.addEventListener('pointermove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        if (e.clientY >= rect.top && e.clientY <= rect.bottom && e.clientX >= rect.left && e.clientX <= rect.right) {
+          pointer.x = e.clientX - rect.left;
+          pointer.y = e.clientY - rect.top;
+          pointer.active = true;
+        } else if (!pointer.down) {
+          pointer.active = false;
+        }
+      }, { passive: true });
+
+      window.addEventListener('pointerup', () => {
+        pointer.down = false;
+        pointer.dragNode = null;
+      });
+
+      canvas.addEventListener('pointerleave', () => {
+        if (!pointer.down) pointer.active = false;
+      });
+
+      // Mode Controls
+      const modeButtons = document.querySelectorAll('.sim-btn[data-mode]');
+      modeButtons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+          mode = btn.getAttribute('data-mode');
+          modeButtons.forEach((b) => b.classList.toggle('active', b === btn));
+          waveImpulses = [];
+          if (prefersReducedMotion) renderFrame();
+        });
+      });
+
+      const resetBtn = document.getElementById('sim-reset');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', resetSimulation);
+      }
+
+      // Pause animation when hero scrolls out of view
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              isHeroVisible = entry.isIntersecting;
+              if (isHeroVisible) {
+                startLoop();
+              } else if (rafId !== null) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+              }
+            });
+          },
+          { threshold: 0.05 }
+        );
+        observer.observe(heroSection);
+      }
+
+      reducedMotionQuery.addEventListener('change', (e) => {
+        prefersReducedMotion = e.matches;
+        if (prefersReducedMotion) renderFrame();
+      });
+
+      window.addEventListener('resize', resizeCanvas);
+      resizeCanvas();
+      startLoop();
+    })();
+  </script>
+</body>
+</html>
