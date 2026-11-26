@@ -722,6 +722,28 @@
       text-underline-offset: 4px;
     }
 
+    .project-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      font-family: var(--mono);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .project-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .project-links a:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+
     /* Teaching & Syllabi */
     .syllabi-grid {
       display: grid;
@@ -1025,6 +1047,32 @@
         </div>
 
         <div class="projects-grid">
+          <!-- VectorLab -->
+          <article class="project-card">
+            <div class="project-media">
+              <img src="./old_media/vectorlab-preview.png" alt="VectorLab Interactive Physics Engine interface preview" loading="lazy" />
+            </div>
+            <div class="project-body">
+              <div class="project-index">FEATURED 01 / ENGINE &amp; QA</div>
+              <h3 class="project-title">VectorLab — Interactive Physics Engine &amp; Automated QA Suite</h3>
+              <p class="project-desc">
+                Zero-dependency HTML5 Canvas physics simulation and assessment suite for CBSE/ISC Class 10–12 (Spherical Mirrors, Projectile Motion, DC Circuits, and Refraction/Prisms) featuring deterministic <code>window.__VECTOR_STATE__</code> telemetry, anti-spoiler Exam Mode grading, and a headless Playwright E2E + GitHub Actions CI/CD pipeline.
+              </p>
+              <div class="project-tags">
+                <span>HTML5 Canvas</span>
+                <span>Vanilla JS</span>
+                <span>Playwright</span>
+                <span>GitHub Actions</span>
+                <span>Automated QA</span>
+              </div>
+              <div class="project-links">
+                <a href="https://arshad7658.github.io/vectorlab/" target="_blank" rel="noopener noreferrer">Live Demo ↗</a>
+                <a href="https://github.com/arshad7658/vectorlab" target="_blank" rel="noopener noreferrer">Source Code ↗</a>
+                <a href="https://arshad7658.github.io/vectorlab/qa-report/" target="_blank" rel="noopener noreferrer">QA Report ↗</a>
+              </div>
+            </div>
+          </article>
+
           <!-- Rotational Dynamics Laboratory -->
           <article class="project-card">
             <div class="project-media">
